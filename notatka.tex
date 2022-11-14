@@ -1,0 +1,371 @@
+\documentclass{report}
+
+\usepackage{polski}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[margin=2.5cm]{geometry}
+
+\title{Kryptografia z elementami algebry}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Wstęp do algebry} % Wykład 2022-10-10
+
+\section{Definicja działania}
+
+Def.
+\textbf{Działaniem wewnętrznym} (dwuargumentowym) w zbiorze A nazywamy dowolne odwzorowanie $* : A \times A \to A$ co zapisujemy $ *(a, b) = a * b $.
+
+Zero nie jest liczbą naturalną
+
+Przykłady:
+\begin{itemize}
+\item Zbiór liczb naturalnych z dodawaniem $N^+ = (N, +)$
+\item Zbiór liczb całkowitych z dodawaniem $Z^+ = (N, *)$
+\item Zbiór liczb modulo $n$ z dodawaniem $Z_n^+$
+\item Zbiór liczb $\Phi(n) = \{ a \in Z_n, \gcd(a, n) = 1 \}$
+\end{itemize}
+
+\subsection{Definicje obiektów algebry}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{ c X X }
+	\toprule
+	\textbf{Nazwa} & \textbf{Opis} & \textbf{Przykład}  \\
+	Grupoid & Dowolny niepusty zbiór z działaniem wewnętrznym & Liczby rzeczywiste z potęgowaniem \\
+	Półgrupa & Grupoid w którym działanie jest łączne & Liczby dodatnie z dodwaniem \\
+	Monoid & Półgrupa posiadająca element neutralny & Ciągi znaków z konkatenacją \\
+	Grupa &  Monoid w którym istnieją elementy przeciwne &  \\
+	Grupa abelowa & Grupa w której działanie jest przemienne & Liczby całkowite z dodwaniem \\
+	\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Własności działań}
+
+\begin{description}
+\item[Łączność] Dla $a, b \in A$ zachodzi $a * (b * c) = (a * b) * c$
+\item[Przemienność] Dla $a, b \in A$ zachodzi $a * b = b * a$
+\item[Element neutralny $e$] Dla $a, e \in A$ zachodzi $e * a = a * e = a$.
+\item[Element przeciwny $b$] Dla $a \in A$ i elementu neutralnego $e$ zachodzi $a * b = b * a = e$. Gdy używamy oznaczeń addytywnych móiwmy \textit{przeciwny}, gdy multiplikatywnych \textit{odwrotny}.
+
+Co ważne wprowadzając element przeciwny nie wprowadzamy nowej operacji. Liczby całkowite z dodawaniem posiadają elementy przeciwne, ale nie posiadają działania odejmowania - odejmowanie wykonujemy jako dodawanie elementu przeciwnego.
+\end{description}
+
+Element neutralny, o ile istnieje, jest wyznaczony jednoznacznie. Jeśli działanie jest łączne to każdy element posiada co najwyżej jeden element przeciwny.
+
+\paragraph{Dowód istnienia tylko jednego elementu neutralnego}
+
+% TODO
+
+\paragraph{Dowód istnienia co najwyżej jednego elementu neutralnego}
+
+% TODO
+
+\subsection{Podgrupa}
+
+Def.
+Niepusty podzbiór $H$ grupy $(G, *)$ nazywamy podgrupą gdy dla dowolnych $a, b \in H$ element $ab^-1 \in H$ co zapisujemy $H < G$. Przykładowo: $ \Phi(8) = \{ 1, 3, 5, 7 \} $ z mnożeniem modulo 8 posiada następujące podgrupy: $\{1\}$, $\{1,3\}$, $\{1,3,5,7\}$.
+
+Stw. Niech $G$ będzie grupą, a $H \subseteq G$ niepustym podzbiorem. Wtedy następujące warunki są równoważne:
+\begin{enumerate}
+\item $H$ jest podgrupą $G$
+\item Element neutralny $e \in H$ oraz $H$ jest zamknięty ze wzgledu na działanie i operację odwrotności tzn. $ab^{-1} = e$ dla $a,b \in H$
+\item $H$ wraz z działaniem jest grupą.
+\end{enumerate}
+
+\subsection{Warstwy}
+
+Niech $H$ będzie podgrupą $G$. Warstwą lewostronną wyznaczoną przez element $a \in G$ nazywamy $aH = \{ ah, h \in H \}$.
+
+Przykładowo dla $Z_8^+$ i podgrupy $H=\{0,6\}$.
+
+\begin{align*}
+0 + H = \{ 0, 6 \} \\
+1 + H = \{ 1, 7 \} \\
+2 + H = \{ 2, 0 \} \\
+3 + H = \{ 3, 1 \} \\
+4 + H = \{ 4, 2 \} \\
+5 + H = \{ 5, 3 \} \\
+6 + H = \{ 6, 4 \} \\
+7 + H = \{ 7, 5 \}
+\end{align*}
+
+Warstwy lewostronne są albo identyczne albo rozłączne. Suma mnogościowa wszystkich wartsw lewostronnych jest równa całej grupie.
+
+Indeksem podgrupy H w grupie G nazywamy nazywamy ilość (mnogościową) zbioru różnych wartstw lewostronnych.
+
+
+Twierdzenie Lagrange: Niech G będzie grupą skończoną, a H jej podgrupą. Wtedy $|G| = (GiH)|H|$. (Można z tego wywnioskować, że rząd grupy dzieli rząd grupy).
+
+Przykład:
+
+Dla grupy $Z_8^+ = \{ 1, 2, 3, 4, 5, 6, 7 \}$ i podgrupy $H = \{0,4\}$ z wyżej wprowadzonej tożsamości wynika, że $|G| = (GiH)|H| \implies \frac{|G|}{|H|} = (GiH)$.
+
+Dowód:
+Pokażemy, że $|aH| = |H|$ dla $a \in G$.
+Wykażemy, to poprzez to, że funkcja $f : H \to aH$ jest różnowartościowa.
+
+\chapter{Kryptografia}
+
+Kryptografię dzielimy na:
+\begin{description}
+\item[Kryptografia] Projektowanie i analiza algorytmów, tworzenie protokołów.
+\item[Kryptoanaliza] Łamanie algorytmów
+\end{description}
+
+Zakładamy, że cała komunikacaj jest przesyłana otwartym kanałem, czyli formą komunikacji która jest publiczna - każdy może nasłuchiwać przesyłane komunikaty. Protokół kryptograficzny powinien być odporny na próby manipulacji zprzez jedną ze stron.
+
+Protokół jest \textbf{bezpieczny} jeśli przez czas od jego publikacji nie zostanie znaleziona metoda na złamanie go.
+
+Szyfrowanie doskonałe - na podstawie szyfrogramu nie mogę nic wywnioskować o wiadomości.
+
+\section{Powszechne oznaczenia}
+
+\begin{description}
+\item[M] wiadomość
+\item[C] szyfrogram
+\item[K] klucz do szyfrowania
+\item[E] algorytm szyfrowania
+\item[D] algorytm deszyfrowania
+\item[G] generator ciągów pseudolosowych
+\item[$(G, E, D)$] schemat szyfrowania o następujących własnościach:
+	\begin{itemize}
+		\item Szyfrowanie wiadomości przy pomocy klucza daje ciąg szyfrogram $E_K(M) = C$
+		\item Deszyfrowanie przy pomocy klucza szyfrogramu daje wiadomość $D_K(C) = M$
+	\end{itemize}
+\end{description}
+
+Klucze powinny być losowe, tzn. każdy klucz powinien mieć takie same prawodpodobieństwo wystąpienia.
+
+\section{Symetryczny aprotokół szyfrowania}
+
+Cel: Bezpieczne przekazywanie informacji między stronami.
+
+\begin{enumerate}
+\item Alice i Bob uzgadaniają jawnie $(E, D)$ (algorytm szyfrowania).
+\item Alice i Bob uzgadniają bezpiecznie klucz tajny $K$.
+\item Alice wysyła zaszyfrowaną wiadomość (szyfrogram) $C = E_K(M)$ do Boba
+\item Bob deszyfruje szyfrogram $D_K(C) = M$ i odczytuje wiadomość.
+\end{enumerate}
+
+Potencjalnym problemem tego protokołu jest: na ile bezpieczne ustalenie jest klucza, jak i na ile bezpieczny jest algorytm szyfrowania.
+
+\section{Szyfrowanie z kluczem jednorazowym}
+
+\begin{enumerate}
+\item Alice i Bob generują klucz.
+\item Alice koduje przy pomocy operacji XOR (oznaczana $\oplus$: $ E_K(M) = K \oplus M $.
+\item Bob dekoduje przy pomocy operacji XOR: $D_K(C) = K \oplus C$.
+\end{enumerate}
+
+Wadą tego algorytmu jest klucz o długości wiadomości. Niestety udowodniono, że klucz który miałby osiągnąć szyfrowanie doskonałe musi mieć co najmniej tyle samo bitów co wiadomość.
+
+\section{Bezpieczeństwo obliczeniowe}
+
+Adwersarz nie powinien móc złamać klucza z uwagi na zbyt dużą moc obliczeniową konieczną do złamania szyfrowania jak i małym prawdopodobieństwem odgadnięcia pojedyńczego klucza.
+
+Mówiymy, że algorytmm działający na danych, o liczbie bitów $k$ działący w czasie wielomianowym (wykładniczym jeśli liczba operacji elementarnych na bitach potrzebnych do wykonania tego algorytmu jest rzędu $O(k^c)$ ($O(e^{kc})$).
+
+Przykładowo dodawanie dwóch liczb $a, b \in N$, takich, że $a\leq b$ ma złożoność $O(\log b)$.
+
+\subsection{Algorytm znajdowania dzielnika}
+
+Aby znaleźć dzielnik liczby $n$ potrzebujemy sprawdzić liczby od $3 do \sqrt n$, co daje liczbę operacji $O(e^{\frac{1}{2}\log n})$.
+
+\chapter{Wykład 3}
+
+% Protokół Difiiego Helmnana.
+% Rachunek indeksów
+% algorytm fermata, millera, AKS
+
+Stwierdzenie.
+Niech A będzie dowolnym podzbiorem grupy G. Istnieje wtedy najmniejsza w sensie inkluzji podgrupa H grupy G zawierająca A.
+
+Podgrupę, o której mowya, nazywamy podgrupą generowaną przez zbiór A i oznaczmay $\langle A \rangle$. Zbiór A nazywamy zbiorem generatorów grupy H.
+
+Grupę, w której istnieje skończony zbiór generatorów nazywamy skończenie generowaną.
+
+Grupę, która posiada jendoelementowy zbiór generatorów nazywamy cykliczną.
+
+Grupa generowana przez zbiór pusty to grupa identycznościowa.
+
+Grupa $Z^+$ jest cykliczna, a jej generatorem jest $1$ lub $-1$.
+Grupa $Z_n^+$ jest cykliczna, a jej generatorem jest 1
+Grupy $\phi(2)$, $\phi(4)$ są cykliczne
+Grupa $(p^k)$ jest cykliczna, gdzie $k \in P$
+
+
+Rżad grupy $\langle g \rangle$ nazywanmy rzędem elementu $g$ w grupie G i oznaczamy symbolem $ord(g)$.
+
+Dla $\phi(p)$ mamy $ord(1) = 1$, $ord(p-1) = 2$.
+
+Dla $\phi(17)$ = $\{ 1, \dots, 16 \}$,
+
+Jeżeli $\langle g \rangle = \phi(p^k)$, to $ord(g) = \phi(p^k)$
+
+\subsection{Homomorfizm}
+
+Jest to odwzorowanie $f : G \to G^-1$ jeśli $f(ab) = f(a)f(b)$.
+
+Mówimy, że $f$ jest:
+
+\begin{description}
+	\item[Monomorfizmem], gdy $f$ jest różnowartościowa (injekcją)
+	\item[Epimorfizmem], gdy $f$ jest surkiekcją
+	\item[Izomorfizm], gdy $f$ jest bijekcją.
+\end{description}
+
+Gdzie dla algebraika izomorficzne grupy są identyczne, tak dla kryptografa są one różne, gdyż izomorfizm może być funkcją jednokierunkową.
+
+\section{Złożoność obliczeniowa}
+
+Funkcja $f : N \to R$ jest jednokierunkowa jeśli:
+\begin{itemize}
+\item obliczenie wartości $f$ jest czasu wielomianowego ze względu na liczbę bitów danych.
+\item obliczenie wartości $f^-1$ jest czas uwykładniczego, ze względu na liczbę bitów danych.
+\end{itemize}
+
+Niech G będzie dowolną grupą skończoną. Niech $g \in G$ oraz $x < |G|$. Definiujemy $F(G, g, x) = g \in G$, oraz $F^-1(G, g, y) = x$, gdzie $y=g^x$ dla $y \in G$ o ile takie $x$ istnieje.
+
+Dla grupy $G = Z_n^+$ można zdobyć $F^-1$ rozszerzonym algorytmem euklidesa (który nie jest wykładniczy), więc nie jest jednokierunkowa.
+
+Dla grupy $G = \phi(n)$ można zdobyć $F^-1$ umiemy zrobić tylko w czasie wykładniczym, dlatego ta funkcja jest jednokierunkowa.
+
+Zbiór $Ker(f) = \{ g \in G : f(g) = e' \}$ nazywamy jądrem homoformizmu $f$. Jądro jest podgrupą grupy $G$.
+
+Zbiór $Im(f) = \{ g' \in G' : \exists_{g\in G} f(g) = g' \}$ nazywamy obrazem homomorfizmu. Obraz jest podgrupą grupy $G'$.
+
+Twierdzenie o izomorfiźmie.
+
+Homomorfizm którego jądro jest trywialne jest injekcją.
+
+\chapter{Wykład 4} % 2022-11-14
+
+\section{Problem logarytmy dyskretnego}
+
+Dane $p, g, y_A$. Do obliczenia $x_A$ taki, że $g^{x_A} = y_A \pmod{p}$.
+
+Na komputerze klasycznym problem wykładniczy, na kwantowym - wielomianowy.
+
+\section{Algorytm Diffiego-Hellomana}
+
+Dla ustalonego $p$, obliczenia wykonujemy modulo $p$.
+
+\begin{enumerate}
+\item Alice losuje $p$ oraz $g$ takie, że $g$ jest generatorem grupy $g \in \Phi(p)$
+\item Alice losuje $1 < x_A < p$, Bob losuje $1 < x_B < p$
+\item Alice oblicza $y_A = g^{x_A}$, Bob oblicza $y_B = g^{x_B}$
+\item Alice i Bob otwartym kanałemp rzesyłają sobie $y_A$ oraz $y_B$
+\item Alice wyznacza wartość $y = {y_B}^{x_A}$, Bob wyznacza wartość $y = {y_A}^{x_B}$.
+\end{enumerate}
+
+\subsection{Bezpieczeństwo}
+
+Wydobycie wartości $x_A$ lub $x_B$ nie jest praktycznie osiągalne z uwagi na problem logarytmu dyskretnego.
+
+
+\paragraph{Problem Diffiego-Helmana}
+
+Dane $p, g, y_A, y_B$, wyliczamy: $y = g^{x_A x_B} \pmod{p}$.
+
+Podobnie jak z problemem logarytmu dyskretnego, na komputerze klasycznym podejrzewamy, że jest to problem trudny obliczeniowo.
+
+\paragraph{Atak aktywny}
+
+Mallet może przejmować komunikację pomiędzy Alice i Bobem. Przejmuje wysyłane wartości $y_A$ oraz $y_B$, przesyłając wartość $y_M$.
+Powoduje to, że Mallet efektywnie stosuje algorytm Diffiego-Hellomana pomiędzy sobą, a Alice oraz sobą, a Bobem.
+
+Atak aktywny czyni algorytm niepraktycznym, z uwagi na to, że Alice i Bob nie mają możliwości potwierdzenia, że wysłana informacja
+pochodzi od drugiej oosby, a nie od atakującego.
+
+\section{Protokół ElGamal}
+
+Protokół działa na podstawie dowolnej grupy $(G, \times)$ w której istnieje problem logarytmu dyskretnego (lub izomorficzny).
+
+\subsection{Algorytm szyfrowania z kluczem publicznym.}
+
+Składa się z:
+
+\begin{enumerate}
+\item Algorytm generuje klucz tajny $k$ (deszyfrujący) oraz klucz publiczny $K$ (szyfrujący).
+Bezpieczeństwo opiera się na trudności obliczeniowej wydobycia klucza tajnego z publicznego.
+\item Algorytm szyfrowania
+\item Algorytm deszyfrowania
+\end{enumerate}
+
+
+\subsection{Algorytm}
+
+\paragraph{Algorytm generowania klucza}
+
+Alice generuje klucz.
+
+\begin{enumerate}
+\item Losuj liczbę pierwszą $p$ (ustalenie grupy $\Phi(p)$.
+\item $g \in \Phi(p)$, gdzie $g$ jest generatorem $\Phi(p)$
+\item Losuj $1 < x < p$.
+\item Oblicz $y = g^x \pmod{p}$
+\item Klucz tajny: $k = (x, p)$, klucz publiczny: $K = (p, g, y)$.
+\end{enumerate}
+
+\paragraph{Algorytm szyfrowania}
+
+Bob szyfruje wiadomość, będącą $1 < M < p$
+
+\begin{enumerate}
+\item Losuje $ 1 < r < p$
+\item oblicza $C_1 = g^r \pmod{p}$
+\item oblicza $C_2 = My^r \pmod{p}$
+\item Pakiet zaszyfrowany to $C = [C_1, C_2]$ i jest on wysyłany do Alice kanałem otwartym.
+\end{enumerate}
+
+\paragraph{Algorytm deszyfrowania}
+$$
+M = C_2 {C_1}^{-x} \pmod{p}
+$$
+
+ponieważ $$ C_2 {C_1}^{-x} = My^r(g^r)^{-x} = M g^{xr} g^{-rx} = M \pmod{p}$$
+
+Wrażliwy też jest na problem Diffiego-Helmana, z uwagi na wartości $y = g^x$ oraz $C_1 = g^r$, które zakładając, że da się go rozwiązać, można by było zdeszyfrować wiadomość przez wyliczenie $g^{xr}$.
+
+Dla klucza publicznego $K = (p, g, y)$ i wartości $x$ z klucza prywatnego zastanawiano się nad złożonością obliczania bitów $x = (b_k, \dots, b_1)_2$.
+Obliczenie pierwszego bitu $b_1$ jest osiągalne wielomianowo, pozostałe już są problemem trudnym.
+
+Jeśli mamy $a \in \Phi(p)$ i mówimy, że $a$ jest resztą kwadratową jeśli $\exists_b b^2 = a$. Jeśli $x$ jest parzyste, to $y$ jest resztą kwadratową. Jeśli $x$ jest nieparzysty, to $y$ nie jest resztą kwadratową. Sprowadza to rozwiązywanie problemu pierwszego bitu do rozwiązywania reszty kwadratowej.
+
+\subsection{Problem drugiego bitu}
+
+\paragraph{Symbol Lagranga}
+
+Euler udowodnił, że $\left( \frac{a}{p} \right) = a^{\frac{p-1}{2}}$
+
+$$ y = g^{(b_nb_{n-1}\dots b_2 0)_2} $$
+
+Jeśli ostatni bit to zero, to wiemy, że liczba $y$ jest kwadratem - można spierwiastkować. Wychodzi $\sqrt{a} = \pm b$, $\pm b \in \Phi(p)$. $-b$ oraz $b$ są nierożróżnialne gdyż obie są liczbami dodatnimi. Z uwagi na to, nie da się obliczyć bitu $b_2$. Generalnie $b = (b_nb_{n-1}\dots b_2)_2 \lor -b = (b_nb_{n-1}\dots b_2)_2$
+
+Tw. Zakładamy, że istnieje algorytm A, który dla danych $(p, g, y)$ oblicza drugi bit $x$. Wtedy istnieje algorytm $B$, który oblicza $x = log_g(y)$.
+
+\paragraph{Algorytm B}
+
+% b_1 = L_1(y)
+% y = yg^{-b_1} \pmod{p}
+% i = 1
+% while y != 1 do
+%   b_i = L_2(y)
+%   z = y^\frac{p+1}{4} \pmod{p}
+%   if L_1(z) == b_i
+%     y = z \pmod{p}
+%   else
+%     y = -z \pmod{p}
+%   g = yg^{-b_i}
+%   i = i + 1
+
+Lemat. Niech $p = 3 \pmod{4}$. Dla $y \neq 0$ mamy $L_1(y) \neq L_1(-y)$
+
+\end{document}
