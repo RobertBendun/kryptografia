@@ -368,4 +368,104 @@ Tw. Zakładamy, że istnieje algorytm A, który dla danych $(p, g, y)$ oblicza d
 
 Lemat. Niech $p = 3 \pmod{4}$. Dla $y \neq 0$ mamy $L_1(y) \neq L_1(-y)$
 
+\chapter{Wykład 5}
+
+$ E(F_p) $ dla $ p > 2^300 $
+
+\section{Ciało $K$}
+
+Zbiór $(K, +, \times)$ z dwoma działanami, które spełnia następujące warunki:
+\begin{itemize}
+\item $0$ jest elementem neutralnym operacji addytywnej, $1$ jest elementem neutralnym operacji multiplikatywnej,
+\item $(K, +)$ jest grupą abelową,
+\item $(K set-difference {0}, \times)$ jest grupą abelową,
+\item $\forall a, b, c \in K$ mamy
+	\begin{itemize}
+		\item $a(b + c) = ab + ac$
+		\item $(b + c)a = ba + ca$
+	\end{itemize}
+\end{itemize}
+
+Liczby wymierne, zespolone i rzeczywiste są ciałami.
+
+$(F_p, +)$ jest równoważne z $Z_p^+$ oraz $(F_p, \times)$ jest równoważne z $\Phi(p)$ dla $p$ będącego liczbą pierwszą.
+
+
+\section{Krzywa eliptyczna nad $F_p$}
+
+Niech $p > 3$ będzie liczbą pierwszą. Krzywa eliptyczna nad ciałem $F_p$ zdefiniowana jest przez równanie $E: Y^2 = X^3 + AX + B$, gdzie $A, B \in F_p$, a wyróżnik ${\delta}_E = 4A^3 + 27B^2 \neq 0 \pmod{p}$.
+
+Wyróżnik różny od zera dba o brak podwójnych pierwiastków i gwarantuje, że są 3 pierwiastki rzeczywiste dla krzywej.
+
+\subsection{Punkt}
+
+Mówimy, że punkt $P = (x_0, y_0)$ należy do $E/F_p$ jeśli spełnia równanie: $y_0^2 = x_0^3 + Ax_0 + B \pmod{p}$.
+
+Zbiór wszystkich punktów należących do $E/F_p$ to
+
+$$
+E(F_p) = \{(x, y) : y^2 = x^3 + Ax + B \pmod{p} \} \cup \mathcal{O}
+$$
+
+\paragraph{Przykład} $E : Y^2 = X^3 + 1$. Wyznacz zbiór $E(F_7)$.
+
+\section{Działania w krzywych eliptycznych}
+
+\subsection{Działanie addytywne dla dwóch różnych punktów}
+
+Niech $P, Q \in E(F_p)$, $P = (x_1, y_1)$, $Q = (x_2, y_2)$, $x_1 \neq x_2$.
+
+Wtedy,
+$$
+	P \oplus Q = R, R = (x_3, y_3)
+$$
+
+gdzie
+
+\begin{align*}
+	x_3     & = \lambda^2 - x_1 - x_2       & \pmod{p} \\
+	y_3     & = \lambda (x_1 - x_3) - y_1   & \pmod{p} \\
+	\lambda & = (y_2 - y_1)(x_2 - x_1)^{-1} & \pmod{p}
+\end{align*}
+
+\subsection{Działanie addytywne dla takiego samego punktu}
+
+$$ P \oplus P = Q $$
+
+gdzie
+
+\begin{align*}
+	x_3     & = \lambda^2 - 2x_1         & \pmod{p} \\
+	y_3     & = \lambda(x_1 - x_3) - y_1 & \pmod{p} \\
+	\lambda & = (3x_1^2 + A)(2y1)^{-1}   & \pmod{p}
+\end{align*}
+
+a A to współczynnik z równania krzywej.
+
+Działanie to jest łączne oraz przemienne.
+
+\subsection{Punkt przeciwny}
+
+Przyjmujemy, że jeśli $P = (x, y)$, to $-P  = (x, -y)$. Przyjmujemy, że $P \oplus (-Q) = P \ominus Q$
+
+\paragraph{Element neutralny}
+
+$$P \oplus -P = \mathcal{O}$$
+
+\subsection{Liczba punktów krzywej}
+
+$$
+\#E(F_p) = p + 1 - t, |t| \leq 2\sqrt{p}
+$$
+
+Jeśli krzywa ma rząd, który jest liczbą pierwszą to wystarczy by $p$ było rzędu 300 bitów by był bezpieczny.
+
+\section{Protokół Diffiego-Helmana}
+
+\begin{enumerate}
+	\item Alice losuje $p$ i $E/F_p$ taką, że $\#E(F_p)$ jest liczbą pierwszą
+\end{enumerate}
+
+Lista fajnych krzywych: https://safecurves.cr.yp.to/
+
 \end{document}
