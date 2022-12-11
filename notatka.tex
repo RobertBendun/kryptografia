@@ -468,4 +468,80 @@ Jeśli krzywa ma rząd, który jest liczbą pierwszą to wystarczy by $p$ było 
 
 Lista fajnych krzywych: https://safecurves.cr.yp.to/
 
+$$
+F(P, E, n, p) = nP
+$$
+
+Jeśli liczba elementów grupy $E(F_p)$ jest liczbą pierwszą, to ta grupa jest cykliczna.
+
+\section{Problem logarytmu dyskretnego na krzywej eliptycznej}
+
+Dla $E$, $#E(F_p) = q$ $<P> = E(F_p)$, $Q \in E(F_p)$. Wynik to $Q = nP$.
+
+\section{Kryptosystem ElGamala na krzywej eliptycznej $E/F_p$}
+
+\paragraph{Alice (Algorytm generowania kluczy)}
+
+\begin{enumerate}
+\item Losuje liczbę pierwszą p i ustala $F_p$
+\item Losuje krzywą $E$ nad $F_p$
+\item Losuje $P \in E(F_p)$, $P \neq \mathcal{O}$
+\item Losuje $x \in N, x < #E(F_p)$
+\item Oblicza $Q = xP$
+\item Przyjmuje $K_A = \[ E, p, P, Q \]$ za klucz publiczny i go publikuje
+\item Przyjmuje $k_A = \[ E, p, P, Q, x \]$ za klucz tajny.
+\end{enumerate}
+
+\paragraph{Bob (Algorytm szyfrowania)}
+
+\begin{enumerate}
+\item Ustala wiadomość M
+\item Pobiera $K_A$ klucz publiczny Alice
+\item Koduje $M$ na $P_M$ punkt krzywej $E$
+\item Losuje $ y \in N, y < #E(F_p)$
+\item Oblicza $C_1 = yP$
+\item Oblicza $C_2 = P_M \oplus yQ$
+\item Wysyła $C = \[C_1, C_2\]$.
+\end{enumerate}
+
+\paragraph{Alice (Algorytm deszyfrowania)}
+
+\begin{enumerate}
+\item Oblicza $P_M = C_2 \ominus (xC_1)$
+\item Dekoduje $P_M na M$.
+\end{enumerate}
+
+Założenie Diffiego-Helmana na krzywej eliptycznej
+
+\chapter{Wykład 6}
+
+\section{Grupa ilorazowa i twierdzenie o izomorfiźmie}
+
+Które podgrupy grupy $G$ są jądrami homomorfizmów?
+
+Niech $H$ będzie podgrupą grupy G. Dla $x \in G$ definiujemy $xHx^{-1} = \{xhx^{-1} : h \in H\}$.Podgrupę $H$ grupy $G$ nazywamy dzielnikiem normalnym, gdy dla każdego $x \in G$ mamy $xHx^-1 = H$. Podgrupa $H$ jest dzielnikiem normalnym grupy $G$ wtedy i tylko wtedy, gdy warstwy lewostronne są identyczne z warstwami praowstronnymi.
+Grupy abelowe mają wszystkie podgrupy jako dzielniki normalne.
+
+Pogrupa $H$ jest dzielnikiem normalnym grupy $G$ wtedy i tylko wtedy gdy $\forall_{x\in G} xH = Hx$
+
+$ H \triangleleft G $ - $H$ jest dzielnikiem normalnym grupy $H$.
+
+Dowód:
+
+Niech $g \in xH$. Wtedy $g = xh$ dla $h \in H$. $gx^{-1} = xhx^{-1}$, a z założenia jest to
+
+Zbiór wszystkich warstw $(G/H, \cdot)$ z działaniem $(aH)\cdot(bH) = (ab)H$ jest grupą. Elementem odwrotnym jest $(aH)^{-1} = a^{-1}H$.
+
+Przykład
+
+Dla $G = Z^+$, $H = 4Z^+ = \{ 4z z \in Z\}$. $H < G$.
+
+Homomorfizm kanoniczny $\kappa : G \to G/H$ zdefiniowany jako $forall_{a\in G} \kappa(a) = aH$.
+
+Jądro homomorfizmu na grupie G jest jej dzielnikiem normalnym.
+
+Pierwsze twierdzenie o izomorfiźmie.
+
+Jądra obrazy izomorfizmy dzielnik normalny
+
 \end{document}
